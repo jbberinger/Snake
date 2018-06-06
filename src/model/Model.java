@@ -1,13 +1,24 @@
 package model;
 
 import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,7 +32,7 @@ import view.View;
  *
  * @author Justin Beringer
  */
-public class Model {
+public final class Model {
 
     private final int WIDTH = 600;
     private final int HEIGHT = 600;
@@ -33,7 +44,6 @@ public class Model {
 
     private int squaresToGrow;
     private int applesEaten = 0;
-    private int highScore = 0;
     private Direction direction = Direction.UP;
 
     private final View view;
@@ -43,9 +53,19 @@ public class Model {
     private final Set<Point> occupiedPositions = new LinkedHashSet();
     private Clip gameOverSound, eatAppleSound, gameMusicSound;
 
+    private final String HIGH_SCORE = "High Score: ";
+    private final String GAMES_PLAYED = "Games Played: ";
+    private final String APPLES_EATEN = "Apples Eaten: ";
+
+    private final int HIGH_SCORE_LOC = 0;
+    private final int TOTAL_GAMES_PLAYED_LOC = 1;
+    private final int TOTAL_APPLES_EATEN_LOC = 2;
+
+    private final String[] dataID = {HIGH_SCORE, GAMES_PLAYED, APPLES_EATEN};
+    private final int[] data = new int[dataID.length];
+
     public Model() {
-        generateSnakeAtCenter();
-        generateApple();
+        loadData();
         occupiedPositions.add(apple);
         view = new View(WIDTH, HEIGHT, SCALE, snakeBody, apple);
         initSounds();
@@ -119,8 +139,8 @@ public class Model {
         if (collided(nextHeadX, nextHeadY)) {
             stopMusic();
             playGameOverSound();
-            highScore = Math.max(applesEaten, highScore);
-            view.updateScores(applesEaten, highScore);
+            data[HIGH_SCORE_LOC] = Math.max(applesEaten, data[HIGH_SCORE_LOC]);
+            view.updateScores(applesEaten, data[HIGH_SCORE_LOC]);
             view.gameOver();
         }
 
@@ -131,7 +151,8 @@ public class Model {
             occupiedPositions.add(snakeBody.getFirst());
             generateApple();
             applesEaten++;
-            squaresToGrow += GROWTH_SPURT;
+            data[TOTAL_APPLES_EATEN_LOC]++;
+            squaresToGrow += GROWTH_SPURT - 1;
         } else if (squaresToGrow > 0) {
             snakeBody.addFirst(new Point(nextHeadX, nextHeadY));
             occupiedPositions.add(snakeBody.getFirst());
@@ -140,7 +161,7 @@ public class Model {
             snakeBody.addFirst(snakeBody.removeLast());
         }
 
-        view.updateGridView(snakeBody, apple);
+        view.updateView(snakeBody, apple);
 
     }
 
@@ -179,6 +200,8 @@ public class Model {
         generateApple();
         playMusic();
         view.continueGame();
+        data[TOTAL_GAMES_PLAYED_LOC]++;
+        saveData();
     }
 
     public void clearModel() {
@@ -190,7 +213,6 @@ public class Model {
 
     private void initSounds() {
         try {
-
             URL url = this.getClass().getClassLoader().getResource("sound/gameOver.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             gameOverSound = AudioSystem.getClip();
@@ -205,7 +227,6 @@ public class Model {
             audioIn = AudioSystem.getAudioInputStream(url);
             gameMusicSound = AudioSystem.getClip();
             gameMusicSound.open(audioIn);
-
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
         }
     }
@@ -237,6 +258,45 @@ public class Model {
     public void playEatAppleSound() {
         eatAppleSound.setMicrosecondPosition(0);
         eatAppleSound.start();
+    }
+
+    public void loadData() {
+        Path path = Paths.get("./SnakeData.txt");
+        String line;
+        int dataIndex = 0;
+        try (InputStream in = Files.newInputStream(path)) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                data[dataIndex] = Integer.parseInt(line.replaceAll(dataID[dataIndex], ""));
+                dataIndex++;
+            }
+            reader.close();
+        } catch (Exception ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void saveData() {
+        for (int datum : data) {
+            System.out.println(datum);
+        }
+        Path path = Paths.get("./SnakeData.txt");
+        try (OutputStream out = Files.newOutputStream(path)) {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+            for (int i = 0; i < data.length; i++) {
+                writer.write(dataID[i] + Integer.toString(data[i]));
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void quit() {
+        saveData();
+        System.exit(0);
     }
 
 }

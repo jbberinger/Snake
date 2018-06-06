@@ -54,7 +54,7 @@ public class Controller {
                 model.continueGame();
                 timer.start();
             } else if (keyCode == KeyEvent.VK_N) {
-                System.exit(0);
+                model.quit();
             }
             return;
         }

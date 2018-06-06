@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.Deque;
+import java.util.Random;
 import javax.swing.JPanel;
 
 /**
@@ -27,6 +28,11 @@ public class SnakeAndApple extends JPanel {
     private Deque<Point> snakeBody;
     private final Point apple;
     private final int width, height, scale;
+    private int r = 0;
+    private int g = 255;
+    private int b = 0;
+    private final Random random = new Random();
+    private Color snakeColor = new Color(0, 255, 0);
     private Graphics2D g2d;
 
     SnakeAndApple(int width, int height, int scale, Deque<Point> snakeBody, Point apple) {
@@ -35,7 +41,6 @@ public class SnakeAndApple extends JPanel {
         this.height = height;
         this.scale = scale;
         this.apple = apple;
-
     }
 
     @Override
@@ -87,14 +92,18 @@ public class SnakeAndApple extends JPanel {
     }
 
     public void paintSnake() {
-        g2d.setStroke(new BasicStroke(1f));
-        g2d.setColor(Color.green);
         int xPos, yPos;
         for (Point position : snakeBody) {
+            snakeColor = stripeColor();
+            g2d.setColor(snakeColor);
             xPos = (int) position.getX();
             yPos = (int) position.getY();
             g2d.drawRoundRect(xPos + 2, yPos + 2, scale - 4, scale - 4, 2, 2);
         }
+        System.out.println(snakeColor);
+        r = 0;
+        g = 255;
+        b = 0;
     }
 
     public void paintDots() {
@@ -127,4 +136,22 @@ public class SnakeAndApple extends JPanel {
         }
     }
 
+//    public Color randomColor() {
+//        r = random.nextInt(255);
+//        g = random.nextInt(255);
+//        b = random.nextInt(255);
+//        return new Color(r, g, b);
+//    }
+//    
+//    boolean nextStripe = false;
+//    public Color stripeColor() {
+//        Color stripeColor;
+//        if(nextStripe){
+//            stripeColor = new Color(50,255,50);
+//        }else{
+//            stripeColor = new Color(0, 255, 0);
+//        }
+//        nextStripe = !nextStripe;
+//        return stripeColor;
+//    }
 }

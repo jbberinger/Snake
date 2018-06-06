@@ -1,9 +1,12 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,14 +27,14 @@ public final class View {
     private JFrame frame;
     private JPanel content;
     private final int scale;
-    private ImageIcon icon;
+    private List<Image> icons = new ArrayList<>();
 
     public View(int width, int height, int scale, Deque<Point> snakeBody, Point apple) {
         snakeAndApple = new SnakeAndApple(width, height, scale, snakeBody, apple);
-        newGameFrame = new NewGameFrame(width, height);
-        gameOverFrame = new GameOverFrame(width, height);
+        newGameFrame = new NewGameFrame(width, height, scale);
+        gameOverFrame = new GameOverFrame(width, height, scale);
         this.scale = scale;
-        initIcon();
+        initIcons();
         initGridView();
     }
 
@@ -51,12 +54,12 @@ public final class View {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.pack();
-        frame.setIconImage(icon.getImage());
+        frame.setIconImages(icons);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    public void updateGridView(Deque<Point> snakeBody, Point apple) {
+    public void updateView(Deque<Point> snakeBody, Point apple) {
         snakeAndApple.setSnakeBody(snakeBody, apple);
         snakeAndApple.repaint();
     }
@@ -93,10 +96,10 @@ public final class View {
         gameOverFrame.updateScores(applesEaten, highScore);
     }
 
-    private void initIcon() {
+    private void initIcons() {
         try {
             URL url = this.getClass().getClassLoader().getResource("icon/Icon_128.png");
-            icon = new ImageIcon(url);
+            icons.add((new ImageIcon(url)).getImage());
         } catch (Exception e) {
         }
     }

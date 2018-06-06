@@ -1,0 +1,3 @@
+High Score: 22
+Games Played: 3
+Apples Eaten: 7
