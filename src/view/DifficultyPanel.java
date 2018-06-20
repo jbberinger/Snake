@@ -15,12 +15,12 @@ import javax.swing.JPanel;
  *
  * @author Justin Beringer
  */
-public class DifficultyFrame extends JPanel {
+public class DifficultyPanel extends JPanel {
 
     private final int width, height, scale;
     Graphics2D g2d;
 
-    DifficultyFrame(int width, int height, int scale) {
+    DifficultyPanel(int width, int height, int scale) {
         this.width = width;
         this.height = height;
         this.scale = scale;
@@ -58,7 +58,7 @@ public class DifficultyFrame extends JPanel {
         GlyphVector gv = font.createGlyphVector(frc, "Difficulty");
         g2d.drawGlyphVector(gv,
                 width / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
-                height / 3 - ((int) gv.getVisualBounds().getHeight() / 2));
+                height * 2 / 5 - ((int) gv.getVisualBounds().getHeight() / 2));
     }
 
     public void paintDifficulties() {

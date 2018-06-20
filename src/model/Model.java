@@ -53,10 +53,12 @@ public final class Model {
     private final Deque<Point> snakeBody = new ArrayDeque<>();
     private final Set<Point> occupiedPositions = new LinkedHashSet();
     private Clip gameOverSound, eatAppleSound, gameMusicSound;
+    
+    private final String[] difficulties = {"n00b", "speed", "crazy"};
 
-    private final String HIGH_SCORE_N00B = "High Score N00b: ";
-    private final String HIGH_SCORE_SPEED = "High Score Speed: ";
-    private final String HIGH_SCORE_CRAZY = "High Score Crazy: ";
+    private final String HIGH_SCORE_N00B = "High Score " + difficulties[0] + ": ";
+    private final String HIGH_SCORE_SPEED = "High Score " + difficulties[1] + ": ";
+    private final String HIGH_SCORE_CRAZY = "High Score " + difficulties[2] + ": ";
     private final String GAMES_PLAYED = "Games Played: ";
     private final String APPLES_EATEN = "Apples Eaten: ";
 
@@ -65,9 +67,6 @@ public final class Model {
 
     private final int[] data = new int[dataID.length];
 
-    private final int HIGH_SCORE_N00B_LOC = 0;
-    private final int HIGH_SCORE_SPEED_LOC = 1;
-    private final int HIGH_SCORE_CRAZY_LOC = 2;
     private final int TOTAL_GAMES_PLAYED_LOC = 3;
     private final int TOTAL_APPLES_EATEN_LOC = 4;
 
@@ -147,7 +146,7 @@ public final class Model {
             stopMusic();
             playGameOverSound();
             data[difficulty] = Math.max(applesEaten, data[difficulty]);
-            view.updateScores(applesEaten, data[difficulty]);
+            view.update(difficulties[difficulty], applesEaten, data[difficulty]);
             direction = Direction.UP; // consider making this random
             view.gameOver();
         }
@@ -169,7 +168,7 @@ public final class Model {
             snakeBody.addFirst(snakeBody.removeLast());
         }
 
-        view.updateView(snakeBody, apple);
+        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten); 
 
     }
 
@@ -206,6 +205,7 @@ public final class Model {
         generateSnakeAtCenter();
         generateApple();
         playMusic();
+        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten); 
         view.continueGame();
         data[TOTAL_GAMES_PLAYED_LOC]++;
         saveData();

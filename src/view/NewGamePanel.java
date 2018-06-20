@@ -21,12 +21,12 @@ import javax.swing.JPanel;
  *
  * @author Justin Beringer
  */
-public class NewGameFrame extends JPanel {
+public class NewGamePanel extends JPanel {
 
     private final int width, height, scale;
     Graphics2D g2d;
 
-    NewGameFrame(int width, int height, int scale) {
+    NewGamePanel(int width, int height, int scale) {
         this.width = width;
         this.height = height;
         this.scale = scale;

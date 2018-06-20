@@ -23,7 +23,7 @@ import javax.swing.JPanel;
  *
  * @author Justin Beringer
  */
-public class SnakeAndApple extends JPanel {
+public class GamePanel extends JPanel {
 
     private Deque<Point> snakeBody;
     private final Point apple;
@@ -35,7 +35,7 @@ public class SnakeAndApple extends JPanel {
     private Color snakeColor = new Color(0, 255, 0);
     private Graphics2D g2d;
 
-    SnakeAndApple(int width, int height, int scale, Deque<Point> snakeBody, Point apple) {
+    GamePanel(int width, int height, int scale, Deque<Point> snakeBody, Point apple) {
         this.snakeBody = snakeBody;
         this.width = width;
         this.height = height;
