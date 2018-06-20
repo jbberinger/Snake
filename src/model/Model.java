@@ -54,7 +54,7 @@ public final class Model {
     private final Set<Point> occupiedPositions = new LinkedHashSet();
     private Clip gameOverSound, eatAppleSound, gameMusicSound;
     
-    private final String[] difficulties = {"n00b", "speed", "crazy"};
+    private final String[] difficulties = {"n00b", "quick", "crazy"};
 
     private final String HIGH_SCORE_N00B = "High Score " + difficulties[0] + ": ";
     private final String HIGH_SCORE_SPEED = "High Score " + difficulties[1] + ": ";

@@ -99,7 +99,7 @@ public final class View {
         content.validate();
         content.repaint();
     }
-
+    
     public void continueGame() {
         System.out.println("CONTINUE GAME");
         viewListener.setGameOver(false);

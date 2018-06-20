@@ -65,15 +65,15 @@ public class DifficultyPanel extends JPanel {
         g2d.setColor(Color.red);
         Font font = new Font("Monospaced", Font.PLAIN, width / 25);
         FontRenderContext frc = g2d.getFontRenderContext();
-        GlyphVector gv = font.createGlyphVector(frc, "1 - N00b Snake");
+        GlyphVector gv = font.createGlyphVector(frc, "1 - N00b");
         g2d.drawGlyphVector(gv,
                 width / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
                 height * 5 / 10 - ((int) gv.getVisualBounds().getHeight() / 2));
-        gv = font.createGlyphVector(frc, "2 - Speed Snake");
+        gv = font.createGlyphVector(frc, "2 - quick");
         g2d.drawGlyphVector(gv,
                 width / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
                 height * 6 / 10 - ((int) gv.getVisualBounds().getHeight() / 2));
-        gv = font.createGlyphVector(frc, "3 - Crazy Snake");
+        gv = font.createGlyphVector(frc, "3 - Crazy");
         g2d.drawGlyphVector(gv,
                 width / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
                 height * 7 / 10 - ((int) gv.getVisualBounds().getHeight() / 2));
