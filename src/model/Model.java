@@ -59,12 +59,12 @@ public final class Model {
     private final String HIGH_SCORE_CRAZY = "High Score Crazy: ";
     private final String GAMES_PLAYED = "Games Played: ";
     private final String APPLES_EATEN = "Apples Eaten: ";
-    
+
     private final String[] dataID = {HIGH_SCORE_N00B, HIGH_SCORE_SPEED,
                                      HIGH_SCORE_CRAZY, GAMES_PLAYED, APPLES_EATEN};
-    
+
     private final int[] data = new int[dataID.length];
-    
+
     private final int HIGH_SCORE_N00B_LOC = 0;
     private final int HIGH_SCORE_SPEED_LOC = 1;
     private final int HIGH_SCORE_CRAZY_LOC = 2;
@@ -214,7 +214,7 @@ public final class Model {
     public void chooseDifficulty() {
         view.chooseDifficulty();
     }
-    
+
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
@@ -275,6 +275,11 @@ public final class Model {
         eatAppleSound.start();
     }
 
+    /**
+     * Loads game stats from text file. If no text file exists, a new one is
+     * created.
+     *
+     */
     public void loadData() {
         Path path = Paths.get("./SnakeData.txt");
         String line;
@@ -290,6 +295,8 @@ public final class Model {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /** Saves game stats to text file. **/
 
     public void saveData() {
         for (int datum : data) {

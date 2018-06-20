@@ -5,7 +5,6 @@
  */
 package view;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -53,7 +52,6 @@ public class GameOverFrame extends JPanel {
         g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         
-        //paintDots();
         paintGameOver();
         paintScore();
         paintHighScore();
@@ -97,24 +95,6 @@ public class GameOverFrame extends JPanel {
         g2d.drawGlyphVector(gv,
                 width / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
                 height * 14 / 20 - ((int) gv.getVisualBounds().getHeight() / 2));
-    }
-
-    public void paintDots() {
-        g2d.setStroke(new BasicStroke(0.25f));
-        g2d.setColor(Color.gray);
-        for (int i = 0; i <= width / scale; i++) {
-            for (int j = 0; j <= height / scale; j++) {
-                if (i * scale == width) {
-                    g2d.fillRect(i * scale - 1, j * scale, 1, 1);
-                } else if (j * scale == height) {
-                    g2d.fillRect(i * scale, j * scale - 1, 1, 1);
-                } else {
-                    g2d.fillRect(i * scale, j * scale, 1, 1);
-                }
-            }
-        }
-        g2d.fillRect(width - 1, height - 1, 1, 1);
-
     }
 
     public void updateScores(int applesEaten, int highScore) {

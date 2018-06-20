@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.awt.Color;
@@ -16,7 +11,7 @@ import java.awt.font.GlyphVector;
 import javax.swing.JPanel;
 
 /**
- * Drawn when game is first opened.
+ * Displays available difficulties before starting game.
  *
  * @author Justin Beringer
  */
