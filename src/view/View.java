@@ -12,7 +12,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import util.ViewListener;
 
 /**
  * Main view as part of MVC design pattern.

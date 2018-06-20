@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.Timer;
 import model.Model;
 import util.Direction;
-import util.ViewListener;
 
 /**
  * Main controller as part of MVC design pattern.
@@ -23,7 +22,6 @@ public class Controller {
     private boolean isChoosingDifficulty;
 
     private static final Model model = new Model();
-    private static final ViewListener viewListener = new ViewListener();
     private static ActionListener taskPerformer;
     private static Direction direction;
     private static Timer timer;
