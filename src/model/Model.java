@@ -53,7 +53,7 @@ public final class Model {
     private final Deque<Point> snakeBody = new ArrayDeque<>();
     private final Set<Point> occupiedPositions = new LinkedHashSet();
     private Clip gameOverSound, eatAppleSound, gameMusicSound;
-    
+
     private final String[] difficulties = {"n00b", "quick", "crazy"};
 
     private final String HIGH_SCORE_N00B = "High Score " + difficulties[0] + ": ";
@@ -168,7 +168,7 @@ public final class Model {
             snakeBody.addFirst(snakeBody.removeLast());
         }
 
-        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten); 
+        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten);
 
     }
 
@@ -205,7 +205,7 @@ public final class Model {
         generateSnakeAtCenter();
         generateApple();
         playMusic();
-        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten); 
+        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten);
         view.continueGame();
         data[TOTAL_GAMES_PLAYED_LOC]++;
         saveData();
@@ -295,9 +295,10 @@ public final class Model {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    /** Saves game stats to text file. **/
 
+    /**
+     * Saves game stats to text file. *
+     */
     public void saveData() {
         for (int datum : data) {
             System.out.println(datum);

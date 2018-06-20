@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.awt.BasicStroke;
@@ -67,8 +62,6 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        //gridSquares();
         paintDots();
         paintApple();
         paintSnake();
@@ -135,22 +128,4 @@ public class GamePanel extends JPanel {
         }
     }
 
-//    public Color randomColor() {
-//        r = random.nextInt(255);
-//        g = random.nextInt(255);
-//        b = random.nextInt(255);
-//        return new Color(r, g, b);
-//    }
-//    
-//    boolean nextStripe = false;
-//    public Color stripeColor() {
-//        Color stripeColor;
-//        if(nextStripe){
-//            stripeColor = new Color(50,255,50);
-//        }else{
-//            stripeColor = new Color(0, 255, 0);
-//        }
-//        nextStripe = !nextStripe;
-//        return stripeColor;
-//    }
 }
