@@ -15,19 +15,21 @@ import util.ViewListener;
  */
 public class Controller {
 
-    private static final int TICKS_PER_SECOND = 1000 / 15;
+    private static int TICKS_PER_SECOND;
     private static boolean buttonPressed = false;
     private static boolean isGameOver = false;
     private static boolean isNewGame = true;
     private static boolean isPaused = false;
+    private boolean isChoosingDifficulty;
 
     private static final Model model = new Model();
     private static final ViewListener viewListener = new ViewListener();
+    private static ActionListener taskPerformer;
     private static Direction direction;
     private static Timer timer;
 
     public static void main(String[] args) {
-        ActionListener taskPerformer = (ActionEvent e) -> {
+        taskPerformer = (ActionEvent e) -> {
             model.moveSnake();
             buttonPressed = false;
         };
@@ -43,6 +45,25 @@ public class Controller {
 
         if (isNewGame) {
             isNewGame = false;
+            model.chooseDifficulty();
+            return;
+        }
+
+        if (isChoosingDifficulty) {
+            switch (keyCode) {
+                case KeyEvent.VK_1:
+                    setDifficulty(0);
+                    break;
+                case KeyEvent.VK_2:
+                    setDifficulty(1);
+                    break;
+                case KeyEvent.VK_3:
+                    setDifficulty(2);
+                    break;
+                default:
+                    return;
+            }
+            isChoosingDifficulty = false;
             model.continueGame();
             timer.start();
             return;
@@ -50,13 +71,15 @@ public class Controller {
 
         if (isGameOver) {
             if (keyCode == KeyEvent.VK_Y) {
-                isGameOver = false;
-                model.continueGame();
-                timer.start();
+                model.chooseDifficulty();
             } else if (keyCode == KeyEvent.VK_N) {
                 model.quit();
+            } else {
+                return;
             }
+            isGameOver = false;
             return;
+
         }
 
         switch (key.getKeyCode()) {
@@ -112,6 +135,31 @@ public class Controller {
     public void setNewGame(boolean isNewGame) {
         direction = Direction.UP;
         Controller.isNewGame = isNewGame;
+    }
+
+    public void setChoosingDifficulty(boolean isChoosingDifficulty) {
+        timer.stop();
+        this.isChoosingDifficulty = isChoosingDifficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        switch (difficulty) {
+            case 0:
+                TICKS_PER_SECOND = 1000 / 8;
+                timer = new Timer(TICKS_PER_SECOND, taskPerformer);
+                break;
+            case 1:
+                TICKS_PER_SECOND = 1000 / 15;
+                timer = new Timer(TICKS_PER_SECOND, taskPerformer);
+                break;
+            case 2:
+                TICKS_PER_SECOND = 1000 / 20;
+                timer = new Timer(TICKS_PER_SECOND, taskPerformer);
+                break;
+            default:
+                break;
+        }
+        model.setDifficulty(difficulty);
     }
 
 }

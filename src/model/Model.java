@@ -45,6 +45,7 @@ public final class Model {
     private int squaresToGrow;
     private int applesEaten = 0;
     private Direction direction = Direction.UP;
+    private int difficulty;
 
     private final View view;
     private final Point apple = new Point();
@@ -53,16 +54,22 @@ public final class Model {
     private final Set<Point> occupiedPositions = new LinkedHashSet();
     private Clip gameOverSound, eatAppleSound, gameMusicSound;
 
-    private final String HIGH_SCORE = "High Score: ";
+    private final String HIGH_SCORE_N00B = "High Score N00b: ";
+    private final String HIGH_SCORE_SPEED = "High Score Speed: ";
+    private final String HIGH_SCORE_CRAZY = "High Score Crazy: ";
     private final String GAMES_PLAYED = "Games Played: ";
     private final String APPLES_EATEN = "Apples Eaten: ";
-
-    private final int HIGH_SCORE_LOC = 0;
-    private final int TOTAL_GAMES_PLAYED_LOC = 1;
-    private final int TOTAL_APPLES_EATEN_LOC = 2;
-
-    private final String[] dataID = {HIGH_SCORE, GAMES_PLAYED, APPLES_EATEN};
+    
+    private final String[] dataID = {HIGH_SCORE_N00B, HIGH_SCORE_SPEED,
+                                     HIGH_SCORE_CRAZY, GAMES_PLAYED, APPLES_EATEN};
+    
     private final int[] data = new int[dataID.length];
+    
+    private final int HIGH_SCORE_N00B_LOC = 0;
+    private final int HIGH_SCORE_SPEED_LOC = 1;
+    private final int HIGH_SCORE_CRAZY_LOC = 2;
+    private final int TOTAL_GAMES_PLAYED_LOC = 3;
+    private final int TOTAL_APPLES_EATEN_LOC = 4;
 
     public Model() {
         loadData();
@@ -139,8 +146,9 @@ public final class Model {
         if (collided(nextHeadX, nextHeadY)) {
             stopMusic();
             playGameOverSound();
-            data[HIGH_SCORE_LOC] = Math.max(applesEaten, data[HIGH_SCORE_LOC]);
-            view.updateScores(applesEaten, data[HIGH_SCORE_LOC]);
+            data[difficulty] = Math.max(applesEaten, data[difficulty]);
+            view.updateScores(applesEaten, data[difficulty]);
+            direction = Direction.UP; // consider making this random
             view.gameOver();
         }
 
@@ -190,7 +198,6 @@ public final class Model {
     }
 
     public void newGame() {
-        direction = Direction.UP;
         view.newGame();
     }
 
@@ -202,6 +209,14 @@ public final class Model {
         view.continueGame();
         data[TOTAL_GAMES_PLAYED_LOC]++;
         saveData();
+    }
+
+    public void chooseDifficulty() {
+        view.chooseDifficulty();
+    }
+    
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
     public void clearModel() {

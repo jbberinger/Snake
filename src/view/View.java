@@ -24,6 +24,7 @@ public final class View {
     private final ViewListener viewListener = new ViewListener();
     private final GameOverFrame gameOverFrame;
     private final NewGameFrame newGameFrame;
+    private final DifficultyFrame difficultyFrame;
     private JFrame frame;
     private JPanel content;
     private final int scale;
@@ -33,6 +34,7 @@ public final class View {
         snakeAndApple = new SnakeAndApple(width, height, scale, snakeBody, apple);
         newGameFrame = new NewGameFrame(width, height, scale);
         gameOverFrame = new GameOverFrame(width, height, scale);
+        difficultyFrame = new DifficultyFrame(width, height, scale);
         this.scale = scale;
         initIcons();
         initGridView();
@@ -44,11 +46,11 @@ public final class View {
     private void initGridView() {
         frame = new JFrame("Speed Snake");
         frame.addKeyListener(viewListener);
-        
+
         content = new JPanel();
         content.setBorder(BorderFactory.createEmptyBorder(scale, scale, scale, scale));
         content.setBackground(Color.black);
-        
+
         content.add(newGameFrame);
         frame.add(content);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,16 +78,25 @@ public final class View {
     public void newGame() {
         System.out.println("NEW GAME");
         viewListener.setNewGame(true);
-        frame.remove(snakeAndApple);
         frame.add(newGameFrame);
         frame.validate();
         frame.repaint();
+    }
+
+    public void chooseDifficulty() {
+        System.out.println("CHOOSE DIFFICULTY");
+        viewListener.setChoosingDifficulty(true);
+        content.removeAll();
+        content.add(difficultyFrame);
+        content.validate();
+        content.repaint();
     }
 
     public void continueGame() {
         System.out.println("CONTINUE GAME");
         viewListener.setGameOver(false);
         viewListener.setNewGame(false);
+        viewListener.setChoosingDifficulty(false);
         content.removeAll();
         content.add(snakeAndApple);
         content.validate();

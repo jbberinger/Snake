@@ -39,5 +39,9 @@ public class ViewListener implements KeyListener {
     public void setNewGame(boolean isNewGame) {
         controller.setNewGame(isNewGame);
     }
+    
+    public void setChoosingDifficulty(boolean isChoosingDifficulty) {
+        controller.setChoosingDifficulty(isChoosingDifficulty);
+    }
 
 }

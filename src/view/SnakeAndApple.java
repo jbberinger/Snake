@@ -94,7 +94,6 @@ public class SnakeAndApple extends JPanel {
     public void paintSnake() {
         int xPos, yPos;
         for (Point position : snakeBody) {
-            snakeColor = stripeColor();
             g2d.setColor(snakeColor);
             xPos = (int) position.getX();
             yPos = (int) position.getY();
