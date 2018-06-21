@@ -52,7 +52,8 @@ public final class Model {
     private final Random random = new Random();
     private final Deque<Point> snakeBody = new ArrayDeque<>();
     private final Set<Point> occupiedPositions = new LinkedHashSet();
-    private Clip gameOverSound, eatAppleSound, gameMusicSound;
+    private Clip gameOverSound, eatAppleSound, gameMusic;
+    private boolean soundOn = true;
 
     private final String[] difficulties = {"n00b", "quick", "crazy"};
 
@@ -146,7 +147,7 @@ public final class Model {
             stopMusic();
             playGameOverSound();
             data[difficulty] = Math.max(applesEaten, data[difficulty]);
-            view.update(difficulties[difficulty], applesEaten, data[difficulty]);
+            view.updateGameOverPanel(difficulties[difficulty], applesEaten, data[difficulty]);
             direction = Direction.UP; // consider making this random
             view.gameOver();
         }
@@ -168,7 +169,8 @@ public final class Model {
             snakeBody.addFirst(snakeBody.removeLast());
         }
 
-        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten);
+        view.updateView(snakeBody, apple, difficulties[difficulty],
+                data[difficulty], applesEaten, soundOn);
 
     }
 
@@ -205,10 +207,14 @@ public final class Model {
         generateSnakeAtCenter();
         generateApple();
         playMusic();
-        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten);
+        view.updateView(snakeBody, apple, difficulties[difficulty], data[difficulty], applesEaten, soundOn);
         view.continueGame();
         data[TOTAL_GAMES_PLAYED_LOC]++;
         saveData();
+    }
+
+    public void showControls() {
+        view.showControls();
     }
 
     public void chooseDifficulty() {
@@ -240,39 +246,57 @@ public final class Model {
 
             url = this.getClass().getClassLoader().getResource("sound/gameMusic.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
-            gameMusicSound = AudioSystem.getClip();
-            gameMusicSound.open(audioIn);
+            gameMusic = AudioSystem.getClip();
+            gameMusic.open(audioIn);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
         }
     }
 
     public void pauseMusic() {
-        if (gameMusicSound.isRunning()) {
-            gameMusicSound.stop();
-        } else {
-            gameMusicSound.loop(100);
-            gameMusicSound.start();
+        if (gameMusic.isRunning()) {
+            gameMusic.stop();
+        } else if (soundOn) {
+            gameMusic.loop(100);
+            gameMusic.start();
         }
     }
 
     public void playMusic() {
-        gameMusicSound.setMicrosecondPosition(0);
-        gameMusicSound.loop(100);
-        gameMusicSound.start();
+        if (soundOn) {
+            gameMusic.setMicrosecondPosition(0);
+            gameMusic.loop(100);
+            gameMusic.start();
+        }
     }
 
     public void stopMusic() {
-        gameMusicSound.stop();
+        gameMusic.stop();
     }
 
     public void playGameOverSound() {
-        gameOverSound.setMicrosecondPosition(0);
-        gameOverSound.start();
+        if (soundOn) {
+            gameOverSound.setMicrosecondPosition(0);
+            gameOverSound.start();
+        }
     }
 
     public void playEatAppleSound() {
-        eatAppleSound.setMicrosecondPosition(0);
-        eatAppleSound.start();
+        if (soundOn) {
+            eatAppleSound.setMicrosecondPosition(0);
+            eatAppleSound.start();
+        }
+    }
+
+    public void toggleMute() {
+        soundOn = !soundOn;
+        if (!soundOn) {
+            if (gameMusic.isRunning()) {
+                stopMusic();
+            }
+        } else {
+            playMusic();
+        }
+        view.updateGameHeaderPanel(difficulties[difficulty], applesEaten, data[difficulty], soundOn);
     }
 
     /**

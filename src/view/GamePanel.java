@@ -48,11 +48,6 @@ public class GamePanel extends JPanel {
         return Color.black;
     }
 
-    @Override
-    public boolean isOpaque() {
-        return true;
-    }
-
     /**
      * Ensures GUI is painted when the window is moved or hidden.
      */

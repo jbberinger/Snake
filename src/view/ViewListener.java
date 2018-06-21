@@ -21,7 +21,7 @@ public class ViewListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent key) {
         //System.out.println(key.toString());
-        controller.directionInput(key);
+        controller.respondToInput(key);
     }
 
     @Override
@@ -42,6 +42,10 @@ public class ViewListener implements KeyListener {
     
     public void setChoosingDifficulty(boolean isChoosingDifficulty) {
         controller.setChoosingDifficulty(isChoosingDifficulty);
+    }
+    
+    public void setShowControls(boolean isShowingControls) {
+        controller.setShowingControls(isShowingControls);
     }
 
 }

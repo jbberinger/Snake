@@ -22,10 +22,11 @@ public final class View {
 
     private final GamePanel gamePanel;
     private final GameHeaderPanel gameHeaderPanel;
-    private final ViewListener viewListener = new ViewListener();
     private final GameOverPanel gameOverPanel;
     private final NewGamePanel newGamePanel;
     private final DifficultyPanel difficultyPanel;
+    private final ControlPanel controlPanel;
+    private final ViewListener viewListener = new ViewListener();
     private JFrame frame;
     private JPanel content;
     private final int scale;
@@ -37,6 +38,7 @@ public final class View {
         gameOverPanel = new GameOverPanel(width, height, scale);
         difficultyPanel = new DifficultyPanel(width, height, scale);
         gameHeaderPanel = new GameHeaderPanel(width, height, scale);
+        controlPanel = new ControlPanel(width, height, scale);
         this.scale = scale;
         initIcons();
         initGridView();
@@ -65,11 +67,19 @@ public final class View {
         frame.setVisible(true);
     }
 
-    public void updateView(Deque<Point> snakeBody, Point apple, String difficulty, int highScore, int applesEaten) {
+    public void updateView(Deque<Point> snakeBody, Point apple, String difficulty, int highScore, int applesEaten, boolean soundOn) {
         gamePanel.setSnakeBody(snakeBody, apple);
-        gameHeaderPanel.update(difficulty, highScore, applesEaten);
-        gameHeaderPanel.repaint();
+        updateGameHeaderPanel(difficulty, highScore, applesEaten, soundOn);
         gamePanel.repaint();
+    }
+    
+    public void updateGameHeaderPanel(String difficulty, int highScore, int applesEaten, boolean soundOn) {
+        gameHeaderPanel.update(difficulty, highScore, applesEaten, soundOn);
+        gameHeaderPanel.repaint();
+    }
+    
+    public void updateGameOverPanel(String difficulty, int applesEaten, int highScore) {
+        gameOverPanel.update(difficulty, applesEaten, highScore);
     }
 
     public void gameOver() {
@@ -89,6 +99,15 @@ public final class View {
         content.validate();
         content.repaint();
     }
+    
+    public void showControls() {
+        System.out.println("NEW GAME");
+        viewListener.setShowControls(true);
+        content.removeAll();
+        content.add(controlPanel);
+        content.validate();
+        content.repaint();
+    }
 
     public void chooseDifficulty() {
         System.out.println("CHOOSE DIFFICULTY");
@@ -98,7 +117,7 @@ public final class View {
         content.validate();
         content.repaint();
     }
-    
+
     public void continueGame() {
         System.out.println("CONTINUE GAME");
         viewListener.setGameOver(false);
@@ -109,10 +128,6 @@ public final class View {
         content.add(gamePanel);
         content.validate();
         content.repaint();
-    }
-
-    public void update(String difficulty, int applesEaten, int highScore) {
-        gameOverPanel.update(difficulty, applesEaten, highScore);
     }
 
     private void initIcons() {

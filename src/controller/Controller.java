@@ -15,16 +15,17 @@ import util.Direction;
 public class Controller {
 
     private static int TICKS_PER_SECOND;
-    private static boolean buttonPressed = false;
-    private static boolean isGameOver = false;
-    private static boolean isNewGame = true;
-    private static boolean isPaused = false;
-    private boolean isChoosingDifficulty;
-
-    private static final Model model = new Model();
     private static ActionListener taskPerformer;
-    private static Direction direction;
     private static Timer timer;
+    private static boolean buttonPressed = false;
+
+    private boolean isGameOver = false;
+    private boolean isNewGame = true;
+    private boolean isPaused = false;
+    private boolean isChoosingDifficulty = false;
+    private boolean isShowingControls = false;
+    private static final Model model = new Model();
+    private Direction direction;
 
     public static void main(String[] args) {
         taskPerformer = (ActionEvent e) -> {
@@ -38,11 +39,21 @@ public class Controller {
     /**
      * Maps key presses.
      */
-    public void directionInput(KeyEvent key) {
+    public void respondToInput(KeyEvent key) {
         int keyCode = key.getKeyCode();
+        
+        if (keyCode == KeyEvent.VK_M){
+            model.toggleMute();
+        }
 
         if (isNewGame) {
             isNewGame = false;
+            model.showControls();
+            return;
+        }
+
+        if (isShowingControls) {
+            isShowingControls = false;
             model.chooseDifficulty();
             return;
         }
@@ -68,12 +79,15 @@ public class Controller {
         }
 
         if (isGameOver) {
-            if (keyCode == KeyEvent.VK_Y) {
-                model.chooseDifficulty();
-            } else if (keyCode == KeyEvent.VK_N) {
-                model.quit();
-            } else {
-                return;
+            switch (keyCode) {
+                case KeyEvent.VK_Y:
+                    model.chooseDifficulty();
+                    break;
+                case KeyEvent.VK_N:
+                    model.quit();
+                    break;
+                default:
+                    return;
             }
             isGameOver = false;
             return;
@@ -81,30 +95,59 @@ public class Controller {
         }
 
         switch (key.getKeyCode()) {
+
             case KeyEvent.VK_UP:
                 if (direction != Direction.DOWN && !buttonPressed) {
                     direction = Direction.UP;
+                    buttonPressed = true;
                 }
-                buttonPressed = true;
                 break;
+            case KeyEvent.VK_W:
+                if (direction != Direction.DOWN && !buttonPressed) {
+                    direction = Direction.UP;
+                    buttonPressed = true;
+                }
+                break;
+
             case KeyEvent.VK_DOWN:
                 if (direction != Direction.UP && !buttonPressed) {
                     direction = Direction.DOWN;
+                    buttonPressed = true;
                 }
-                buttonPressed = true;
                 break;
+            case KeyEvent.VK_S:
+                if (direction != Direction.UP && !buttonPressed) {
+                    direction = Direction.DOWN;
+                    buttonPressed = true;
+                }
+                break;
+
             case KeyEvent.VK_LEFT:
                 if (direction != Direction.RIGHT && !buttonPressed) {
                     direction = Direction.LEFT;
+                    buttonPressed = true;
                 }
-                buttonPressed = true;
                 break;
+            case KeyEvent.VK_A:
+                if (direction != Direction.RIGHT && !buttonPressed) {
+                    direction = Direction.LEFT;
+                    buttonPressed = true;
+                }
+                break;
+
             case KeyEvent.VK_RIGHT:
                 if (direction != Direction.LEFT && !buttonPressed) {
                     direction = Direction.RIGHT;
+                    buttonPressed = true;
                 }
-                buttonPressed = true;
                 break;
+            case KeyEvent.VK_D:
+                if (direction != Direction.LEFT && !buttonPressed) {
+                    direction = Direction.RIGHT;
+                    buttonPressed = true;
+                }
+                break;
+
             case KeyEvent.VK_P:
                 if (!isPaused) {
                     isPaused = true;
@@ -115,7 +158,7 @@ public class Controller {
                     model.playMusic();
                     timer.start();
                 }
-                break;
+                break;             
             default:
                 break;
         }
@@ -127,12 +170,12 @@ public class Controller {
 
     public void setGameOver(boolean isGameOver) {
         timer.stop();
-        Controller.isGameOver = isGameOver;
+        this.isGameOver = isGameOver;
     }
 
     public void setNewGame(boolean isNewGame) {
         direction = Direction.UP;
-        Controller.isNewGame = isNewGame;
+        this.isNewGame = isNewGame;
     }
 
     public void setChoosingDifficulty(boolean isChoosingDifficulty) {
@@ -158,6 +201,10 @@ public class Controller {
                 break;
         }
         model.setDifficulty(difficulty);
+    }
+
+    public void setShowingControls(boolean isShowingControls) {
+        this.isShowingControls = isShowingControls;
     }
 
 }
