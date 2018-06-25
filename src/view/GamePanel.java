@@ -87,7 +87,6 @@ public class GamePanel extends JPanel {
             yPos = (int) position.getY();
             g2d.drawRoundRect(xPos + 2, yPos + 2, scale - 4, scale - 4, 2, 2);
         }
-        System.out.println(snakeColor);
         r = 0;
         g = 255;
         b = 0;

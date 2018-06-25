@@ -32,20 +32,24 @@ public class ViewListener implements KeyListener {
     public void keyReleased(KeyEvent e) {
     }
 
-    public void setGameOver(boolean isGameOver) {
-        controller.setGameOver(isGameOver);
+    public void setGameOver() {
+        controller.setGameOver();
     }
 
-    public void setNewGame(boolean isNewGame) {
-        controller.setNewGame(isNewGame);
+    public void setNewGame() {
+        controller.setNewGame();
     }
     
-    public void setChoosingDifficulty(boolean isChoosingDifficulty) {
-        controller.setChoosingDifficulty(isChoosingDifficulty);
+    public void setChoosingDifficulty() {
+        controller.setChoosingDifficulty();
     }
     
-    public void setShowControls(boolean isShowingControls) {
-        controller.setShowingControls(isShowingControls);
+    public void setShowControls() {
+        controller.setShowingControls();
+    }
+    
+    public void setPlaying() {
+        controller.setPlaying();
     }
 
 }

@@ -84,7 +84,7 @@ public final class View {
 
     public void gameOver() {
         System.out.println("GAME OVER");
-        viewListener.setGameOver(true);
+        viewListener.setGameOver();
         content.removeAll();
         content.add(gameOverPanel);
         content.validate();
@@ -93,7 +93,7 @@ public final class View {
 
     public void newGame() {
         System.out.println("NEW GAME");
-        viewListener.setNewGame(true);
+        viewListener.setNewGame();
         content.removeAll();
         content.add(newGamePanel);
         content.validate();
@@ -102,7 +102,7 @@ public final class View {
     
     public void showControls() {
         System.out.println("NEW GAME");
-        viewListener.setShowControls(true);
+        viewListener.setShowControls();
         content.removeAll();
         content.add(controlPanel);
         content.validate();
@@ -111,7 +111,7 @@ public final class View {
 
     public void chooseDifficulty() {
         System.out.println("CHOOSE DIFFICULTY");
-        viewListener.setChoosingDifficulty(true);
+        viewListener.setChoosingDifficulty();
         content.removeAll();
         content.add(difficultyPanel);
         content.validate();
@@ -120,9 +120,10 @@ public final class View {
 
     public void continueGame() {
         System.out.println("CONTINUE GAME");
-        viewListener.setGameOver(false);
-        viewListener.setNewGame(false);
-        viewListener.setChoosingDifficulty(false);
+        viewListener.setGameOver();
+        viewListener.setNewGame();
+        viewListener.setChoosingDifficulty();
+        viewListener.setPlaying();
         content.removeAll();
         content.add(gameHeaderPanel);
         content.add(gamePanel);

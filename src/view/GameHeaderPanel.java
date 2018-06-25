@@ -39,7 +39,7 @@ public class GameHeaderPanel extends GraphicsPanel {
         this.highScore = String.valueOf(highScore);
         this.applesEaten = String.valueOf(applesEaten);
         if(soundOn){
-            sound = "on";
+        sound = "on";
         }else{
             sound = "off";
         }

@@ -61,8 +61,6 @@ public class GraphicsPanel extends JPanel {
         g2d.setColor(color);
         FontRenderContext frc = g2d.getFontRenderContext();
         GlyphVector gv = font.createGlyphVector(frc, text);
-        System.out.println("yPos: " + height + "  visualHeight: " + (int) gv.getVisualBounds().getHeight() / 2);
-        System.out.println("POS: " + (height * yPosition / 10 - ((int) gv.getVisualBounds().getHeight() / 2)));
         g2d.drawGlyphVector(gv,
                 width / 2 - ((int) gv.getVisualBounds().getWidth() / 2), 
                 (float) (height * yPosition / 10 - ((int) gv.getVisualBounds().getHeight() / 2)));

@@ -148,7 +148,7 @@ public final class Model {
             playGameOverSound();
             data[difficulty] = Math.max(applesEaten, data[difficulty]);
             view.updateGameOverPanel(difficulties[difficulty], applesEaten, data[difficulty]);
-            direction = Direction.UP; // consider making this random
+            //direction = Direction.UP; // consider making this random
             view.gameOver();
         }
 
@@ -175,7 +175,13 @@ public final class Model {
     }
 
     public void setDirection(Direction direction) {
-        this.direction = direction;
+        System.out.println(direction);
+        if (direction == Direction.UP && this.direction != Direction.DOWN
+                || direction == Direction.DOWN && this.direction != Direction.UP
+                || direction == Direction.LEFT && this.direction != Direction.RIGHT
+                || direction == Direction.RIGHT && this.direction != Direction.LEFT) {
+            this.direction = direction;
+        }
     }
 
     private boolean ateApple() {
